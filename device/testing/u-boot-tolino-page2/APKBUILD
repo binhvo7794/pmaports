@@ -30,7 +30,7 @@ build() {
 }
 
 package() {
-	install -D -m644 "$builddir/u-boot-dtb.imx" "$pkgdir/usr/share/u-boot/tolino-page2/u-boot.imx"
+	install -Dm644 u-boot-dtb.imx "$pkgdir"/usr/share/u-boot/tolino-page2/u-boot.imx
 }
 
 sha512sums="
