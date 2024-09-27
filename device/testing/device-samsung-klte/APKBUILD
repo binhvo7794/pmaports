@@ -2,7 +2,7 @@
 pkgname=device-samsung-klte
 pkgdesc="Samsung Galaxy S5 (G900F/G9006/G9008/G9009W)"
 pkgver=7
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
@@ -11,7 +11,6 @@ depends="
 	lk2nd-msm8974
 	mkbootimg
 	postmarketos-base
-	postmarketos-initramfs-minimal
 	swclock-offset
 "
 makedepends="devicepkg-dev"
@@ -64,6 +63,6 @@ nonfree_firmware() {
 
 sha512sums="
 6cef5f8ae1785ac16e6fe84bfc861ac50cdfb94db35d764f44a25c960e123cb82f6e56f45362a5340c62a3d5ac225f2689afd4f6964cb88305a0892ba44214f0  bt-module-deps.conf
-74118bac1032a58f4d337b91410fee5c71d3380bfef4f656407fa5cf93717ee0dcdd2464e4ccaad5c5f2f93f20f8ff6ad8e3a4631708cbee8227bc6056c904a0  deviceinfo
+965bc07328245cc4391057f3845bd5cf60e4f4a1890ae81a6a3aabba2f4ad54b265ca9ec1b7f9e95e53d00f1ac196d9c0e4764717583901c78a5caabfb9c15d7  deviceinfo
 0e123f1ce1255395addf08218c7ca7947c7dbd0a81f578ff1c96c53c51bb2c616cd50b390fa92f6fc67ed9c73957f8dd8390213df1520e2d97b9ff256ddbb954  modules-initfs
 "
