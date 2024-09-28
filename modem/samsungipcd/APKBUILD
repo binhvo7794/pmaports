@@ -10,9 +10,10 @@ depends="libsamsung-ipc ppp networkmanager-ppp"
 makedepends="libsamsung-ipc gcc make"
 subpackages="$pkgname-openrc"
 source="
+	90-ttywc.rules
+	usr-lib-NetworkManager-conf.d-51-do-not-use-dnsmasq.conf
 	samsungipcd-v$pkgver.tgz::$url/-/archive/v$pkgver/samsungipcd-v$pkgver.tar.gz
 	samsungipcd.sh
-	90-ttywc.rules
 "
 builddir="$srcdir/samsungipcd-v$pkgver"
 
@@ -26,6 +27,7 @@ package() {
 	make PREFIX="$pkgdir/usr" install
 	install -Dm755 "$srcdir/samsungipcd.sh" "$pkgdir/etc/init.d/samsungipcd"
 	install -Dm644 "$srcdir/90-ttywc.rules" "$pkgdir/lib/udev/rules.d/90-ttywc.rules"
+	install -Dm644 "$srcdir/usr-lib-NetworkManager-conf.d-51-do-not-use-dnsmasq.conf" "$pkgdir/usr/lib/NetworkManager/conf.d/51-do-not-use-dnsmasq.conf"
 }
 
 openrc() {
@@ -36,7 +38,8 @@ openrc() {
 }
 
 sha512sums="
+2c93b98260a8b89d25bfc6bf554dc66f198846f35ed839069212aea2204b9cc92710ea7aa5c77003bd6952085018af1083640052094a115ba67257f9745f80bf  90-ttywc.rules
+9a55788ffa983888163c8b91ca728803142ba648c94d415119009f255ed1eeb0448017c11f04ba68a887d94415e8bf41682301ca53c61eef49485129646afdf6  usr-lib-NetworkManager-conf.d-51-do-not-use-dnsmasq.conf
 edf6e9f887bddc93daadbf1da05ef1ab75db4f3350d1b0fbbf1e90a9dd32dd3d13642aab83b50b5a43bac66889c982f40952b9f7351354a13525dde7f33a7414  samsungipcd-v0.2.3.tgz
 7bdc6cbc4a9add0f4a5a5d4584fbf4fc64cf4a1f0d93a85e97229eba47bbe66a8e0bd8958b4606141a0189422e13af252d3c0301f61069dc75a64e0a3b59d959  samsungipcd.sh
-2c93b98260a8b89d25bfc6bf554dc66f198846f35ed839069212aea2204b9cc92710ea7aa5c77003bd6952085018af1083640052094a115ba67257f9745f80bf  90-ttywc.rules
 "
