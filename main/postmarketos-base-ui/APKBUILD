@@ -150,8 +150,8 @@ _openrc() {
 
 elogind() {
 	install_if="$pkgname=$pkgver-r$pkgrel elogind"
-	depends="sleep-inhibitor !systemd-logind"
 	install="$subpkgname.post-install"
+	depends="sleep-inhibitor !systemd-logind"
 	replaces="
 		elogind
 		sleep-inhibitor
