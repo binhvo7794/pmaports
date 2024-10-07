@@ -2,9 +2,9 @@
 # Please use double quotes only. You can source this file in shell scripts.
 
 deviceinfo_format_version="0"
-deviceinfo_name="Xiaomi Redmi 5A"
+deviceinfo_name="Xiaomi Redmi Note 5A Prime"
 deviceinfo_manufacturer="Xiaomi"
-deviceinfo_codename="xiaomi-riva"
+deviceinfo_codename="xiaomi-ugg"
 deviceinfo_year="2017"
 deviceinfo_arch="aarch64"
 
@@ -32,7 +32,7 @@ deviceinfo_flash_pagesize="2048"
 deviceinfo_flash_sparse="true"
 
 # Kernel options
-deviceinfo_dtb="qcom/msm8917-xiaomi-riva"
+deviceinfo_dtb="qcom/msm8940-xiaomi-ugg"
 deviceinfo_append_dtb="true"
 deviceinfo_flash_kernel_on_update="false"
 
