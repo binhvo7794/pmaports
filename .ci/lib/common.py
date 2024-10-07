@@ -44,14 +44,10 @@ def commit_message_has_string(needle):
     return needle in run_git(["show", "-s", "--format=full", "HEAD"])
 
 
-def run_pmbootstrap(parameters, output_return=False):
+def run_pmbootstrap(parameters):
     """ Run pmbootstrap with the pmaports dir as --aports """
     cmd = ["pmbootstrap", "--aports", get_pmaports_dir()] + parameters
-    stdout = subprocess.PIPE if output_return else None
-    result = subprocess.run(cmd, stdout=stdout, universal_newlines=True)
-    result.check_returncode()
-    if output_return:
-        return result.stdout
+    subprocess.run(cmd, universal_newlines=True, check=True)
 
 
 def get_upstream_branch():
