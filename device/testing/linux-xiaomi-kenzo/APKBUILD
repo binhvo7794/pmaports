@@ -20,7 +20,6 @@ _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/binhvo7794/$_repository/archive/$_commit.tar.gz
 	$_config
-	linux3.7to4.5-ARM64-remove-Sun-Solaris-style-flag-on-section.patch
 "
 builddir="$srcdir/$_repository-$_commit"
 
