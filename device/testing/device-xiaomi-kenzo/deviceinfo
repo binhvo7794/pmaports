@@ -18,7 +18,7 @@ deviceinfo_dev_touchscreen="/dev/input/event0"
 
 # Bootloader related
 deviceinfo_flash_method="fastboot"
-deviceinfo_kernel_cmdline="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk ramoops_memreserve=4M androidboot.selinux=permissive buildvariant=eng PMOS_NOSPLASH"
+deviceinfo_kernel_cmdline="androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M loop.max_part=7 androidboot.init_fatal_reboot_target=recovery buildvariant=userdebug console=tty0 PMOS_NOSPLASH"
 deviceinfo_generate_bootimg="true"
 deviceinfo_bootimg_qcdt="false"
 deviceinfo_flash_offset_base="0x80000000"
