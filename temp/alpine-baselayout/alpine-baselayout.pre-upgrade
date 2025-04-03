@@ -38,4 +38,15 @@ if [ -d var/spool/mail ] && [ ! -L var/spool/mail ]; then
 fi
 addgroup -S -g 42 shadow 2>/dev/null
 
+if [ ! -L /bin ]; then
+    echo "INFO: /usr merge dryrun to check for errors"
+    if merge-usr --dryrun ; then
+        echo "INFO: Doing the /usr merge"
+        merge-usr
+    else
+        echo "Error trying the /usr merge!"
+        exit 1
+    fi
+fi
+
 exit 0

@@ -1,7 +1,7 @@
 # Forked from Alpine to get the usr-merge going
 
 pkgname=alpine-baselayout
-pkgver=3.7.0
+pkgver=9999
 pkgrel=0
 pkgdesc="Alpine base dir structure and init scripts"
 url="https://git.alpinelinux.org/cgit/aports/tree/main/alpine-baselayout"
@@ -10,7 +10,7 @@ license="GPL-2.0-only"
 pkggroups="shadow"
 replaces_priority=1000
 options="!fhs !check keepdirs"
-depends="$pkgname-data=$pkgver-r$pkgrel"
+depends="$pkgname-data=$pkgver-r$pkgrel merge-usr"
 subpackages="$pkgname-data"
 install="$pkgname.pre-install $pkgname.pre-upgrade $pkgname.post-upgrade
 	$pkgname.post-install"
@@ -95,10 +95,6 @@ package() {
 		etc/profile.d \
 		etc/sysctl.d \
 		home \
-		lib \
-		lib/firmware \
-		lib/modules-load.d \
-		lib/sysctl.d \
 		media \
 		media/cdrom \
 		media/floppy \
@@ -108,12 +104,12 @@ package() {
 		opt \
 		run \
 		run/lock \
-		sbin \
 		srv \
 		sys \
 		usr \
 		usr/bin \
 		usr/lib \
+		usr/lib/firmware \
 		usr/lib/modules-load.d \
 		usr/lib/sysctl.d \
 		usr/local \
@@ -136,6 +132,9 @@ package() {
 		var/spool/cron \
 		var/mail
 
+	ln -s usr/bin bin
+	ln -s usr/lib lib
+	ln -s usr/sbin sbin
 	ln -s ../run var/run
 	ln -s ../run/lock var/lock
 	install -d -m 0555 var/empty
