@@ -6,7 +6,7 @@ pkgname=systemd
 # currently tracking git MR
 pkgver=256.11
 _pkgver="musl-v${pkgver//_/-}-split-usr"
-pkgrel=5
+pkgrel=6
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 arch="all !ppc64le !s390x" # blocked by pmboostrap not supporting
@@ -438,7 +438,7 @@ x11() {
 }
 
 dev() {
-	provides="eudev-dev udev-dev"
+	provides="eudev-dev udev-dev elogind-dev"
 	provider_priority=100
 
 	default_dev
