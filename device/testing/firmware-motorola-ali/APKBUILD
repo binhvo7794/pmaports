@@ -1,5 +1,5 @@
 pkgname=firmware-motorola-ali
-pkgver=1
+pkgver=1.1
 pkgrel=2
 pkgdesc="Firmware for Motorola Moto G6"
 url="https://github.com/julianbraha/firmware-motorola-ali"
@@ -10,6 +10,9 @@ _commit="153ba76124497fb7ce22d87a90149a15bcf67942"
 source="$pkgname-$_commit.tar.gz::https://github.com/moto-g6-mainlining/firmware-blobs/archive/$_commit.tar.gz"
 options="!strip !check !archcheck !spdx !tracedeps"
 builddir="$srcdir/$_repository-$_commit"
+replaces="
+	firmware-qcom-msm8953
+"
 
 _fwdir="/lib/firmware"
 
