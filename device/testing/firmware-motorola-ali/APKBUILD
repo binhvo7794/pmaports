@@ -1,6 +1,6 @@
 pkgname=firmware-motorola-ali
-pkgver=1.1
-pkgrel=2
+pkgver=1
+pkgrel=3
 pkgdesc="Firmware for Motorola Moto G6"
 url="https://github.com/julianbraha/firmware-motorola-ali"
 arch="aarch64"
