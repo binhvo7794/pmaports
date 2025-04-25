@@ -6,7 +6,7 @@ pkgname=systemd
 # currently tracking git MR
 pkgver=256.11
 _pkgver="musl-v${pkgver//_/-}-split-usr"
-pkgrel=5
+pkgrel=6
 pkgdesc="System and service manager"
 url="https://github.com/systemd/systemd"
 arch="all !ppc64le !s390x" # blocked by pmboostrap not supporting
@@ -91,7 +91,11 @@ fi
 
 # provides=openrc and openrc-settingsd to prevent those packages
 # getting pulled in, as there are some conflicts (dbus)
-provides="busctl eudev openrc-settingsd=$pkgver-r$pkgrel"
+provides="
+	busctl=$pkgver-r$pkgrel
+	eudev=$pkgver-r$pkgrel
+	openrc-settingsd
+	"
 provider_priority=100
 
 install="$pkgname.pre-install"
@@ -253,7 +257,11 @@ udevd() {
 	# is a dependency of systemd
 
 	# NOTE: should only be udev, but packages hardcode eudev
-	provides="eudev udev eudev-libs"
+	provides="
+		eudev=$pkgver-r$pkgrel
+		udev=$pkgver-r$pkgrel
+		eudev-libs=$pkgver-r$pkgrel
+		"
 	provider_priority=100
 
 	amove etc/udev
@@ -382,7 +390,7 @@ logind() {
 		shadow
 	"
 
-	provides="elogind"
+	provides="elogind=$pkgver-r$pkgrel"
 	provider_priority=100
 
 	amove usr/bin/loginctl
@@ -437,7 +445,11 @@ x11() {
 }
 
 dev() {
-	provides="eudev-dev udev-dev"
+	provides="
+		eudev-dev=$pkgver-r$pkgrel
+		udev-dev=$pkgver-r$pkgrel
+		elogind-dev=$pkgver-r$pkgrel
+		"
 	provider_priority=100
 
 	default_dev
