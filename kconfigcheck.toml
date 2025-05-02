@@ -12,6 +12,7 @@
 # much effort. Device maintainers may fix it up afterwards and add it back.
 community = [
 	"category:default",
+	"category:accessibility",
 	"category:community_various",
 	"category:containers",
 	"category:debug",
@@ -83,6 +84,24 @@ FW_LOADER_COMPRESS_ZSTD = true
 # required for systemd-oomd
 PSI = true
 PSI_DEFAULT_DISABLED = false
+
+# accessibility: to support many user abilities
+["category:accessibility".">=2.2.26"."all"]
+ACCESSIBILITY = true
+A11Y_BRAILLE_CONSOLE = true
+["category:accessibility".">=2.6.37"."all"]
+SPEAKUP = true
+SPEAKUP_SYNTH_ACNTSA = true
+SPEAKUP_SYNTH_APOLLO = true
+SPEAKUP_SYNTH_AUDPTR = true
+SPEAKUP_SYNTH_BNS = true
+SPEAKUP_SYNTH_DECTLK = true
+SPEAKUP_SYNTH_DECEXT = true
+SPEAKUP_SYNTH_LTLK = true
+SPEAKUP_SYNTH_SOFT = true
+SPEAKUP_SYNTH_SPKOUT = true
+SPEAKUP_SYNTH_TXPRT = true
+
 
 # waydroid: android compatibility layer
 ["category:waydroid".">=0.0.0"."all"]
@@ -495,9 +514,46 @@ HID_BPF = true
 ["category:usb".">=0.0.0"."all"]
 DRM_UDL = true  # DisplayLink - connecting displays via USB
 SND_USB_AUDIO = true  # USB audio devices
-USB_SERIAL_CP210X = true  # USB serial console
 USB_STORAGE = true  # USB mass storage devices
 USB_RTL8152 = true  # USB Ethernet
+# Enable all known usb-serial converters
+["category:usb".">=2.6.20"."all"]
+USB_SERIAL = true
+USB_SERIAL_GENERIC = true
+USB_SERIAL_ARK3116 = true # ARK Micro 3116 USB to Serial device
+USB_SERIAL_BELKIN = true # Belkin USB Serial single port adaptor
+USB_SERIAL_WHITEHEAT = true # WhiteHEAT 4 port USB to serial converter
+USB_SERIAL_DIGI_ACCELEPORT = true # Digi AccelePort USB serial converters
+USB_SERIAL_FTDI_SIO = true # FTDI SIO single port USB to serial converter
+USB_SERIAL_KEYSPAN_PDA = true # Keyspan USB to serial converter
+USB_SERIAL_KEYSPAN = true # Keyspan USB to serial converter
+USB_SERIAL_KLSI = true # KL5KUSB105 - based single port serial adapter
+USB_SERIAL_MCT_U232 = true # Magic Control Technology adapters
+USB_SERIAL_MOS7720 = true # Moschip adapters
+USB_SERIAL_MOS7840 = true # Moschip adapters
+USB_SERIAL_PL2303 = true # PL2303 USB Serial single port adapter
+USB_SERIAL_TI = true # TI USB 3410 or 5052 serial devices
+["category:usb".">=2.6.24"."all"]
+USB_SERIAL_CH341 = true # Winchiphead CH341 single port USB to serial adapter
+USB_SERIAL_OTI6858 = true # OTi-6858 single port USB to serial converter
+["category:usb".">=2.6.26"."all"]
+USB_SERIAL_SPCP8X5 = true # spcp8x5 converter chip
+["category:usb".">=2.6.36"."all"]
+USB_SERIAL_SSU100 = true # Quatech SSU-100 single port usb to serial adapter
+["category:usb".">=3.1.0"."all"]
+USB_SERIAL_F81232 = true # Fintek F81232 single port usb to serial adapter
+USB_SERIAL_WISHBONE = true # USB attached Wishbone bus
+USB_SERIAL_QT2 = true # Quatech USB 2 serial adapters
+["category:usb".">=3.10.0"."all"]
+USB_SERIAL_SIMPLE = true
+["category:usb".">=3.14.0"."all"]
+USB_SERIAL_MXUPORT = true # MOXA UPort Serial hub
+["category:usb".">=4.1.0"."all"]
+USB_SERIAL_F8153X = true # Fintek F81532/534 Multi-Ports USB to serial adapter
+["category:usb".">=4.2.0"."all"]
+USB_SERIAL_UPD78F0730 = true # Renesas uPD78F0730 serial driver
+["category:usb".">=5.2.0"."all"]
+USB_SERIAL_XR = true # MaxLinear/Exar USB to Serial converter
 
 ["category:virt".">=0.0.0"."all"]
 HW_RANDOM_VIRTIO = true
