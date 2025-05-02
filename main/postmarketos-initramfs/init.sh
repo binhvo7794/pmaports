@@ -47,6 +47,8 @@ load_modules /lib/modules/initramfs.load
 setup_usb_network
 start_unudhcpd
 
+run_hooks /hooks && touch /tmp/hooks_executed
+
 if [ "$IN_CI" = "false" ]; then
 	setup_framebuffer
 	show_splash "Loading..."
