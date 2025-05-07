@@ -29,9 +29,14 @@ if [ -f "$srcdir/90-$pkgname.rules" ]; then
 		"$pkgdir/etc/udev/rules.d/90-$pkgname.rules"
 fi
 
+if [ -f "$srcdir/1st-stage-initfs-hook.sh" ]; then
+	install -Dm644 "$srcdir/1st-stage-initfs-hook.sh" \
+		"$pkgdir/usr/share/mkinitfs/hooks/00-$pkgname.sh"
+fi
+
 if [ -f "$srcdir/initfs-hook.sh" ]; then
 	install -Dm644 "$srcdir/initfs-hook.sh" \
-		"$pkgdir/usr/share/mkinitfs/hooks/00-$pkgname.sh"
+		"$pkgdir/usr/share/mkinitfs/hooks-extra/00-$pkgname.sh"
 fi
 
 # All the installation paths for the modules conflict with those from
