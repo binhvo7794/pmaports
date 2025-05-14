@@ -7,7 +7,7 @@
 # How to add a new service file (5 steps):
 pkgname=systemd-services
 # 1. bump pkgver
-pkgver=68
+pkgver=69
 pkgrel=0
 pkgdesc="Systemd service files"
 url="https://postmarketos.org"
@@ -35,6 +35,7 @@ subpackages="
 	dconf-systemd:_service
 	docker-engine-systemd:_service
 	eg25-manager-systemd:_service
+	espeakup-systemd:_service
 	evolution-data-server-systemd:_service
 	feedbackd-systemd:_service
 	flatpak-systemd:_service
@@ -121,6 +122,7 @@ _cosmic_greeter_sources="system/cosmic-greeter.service system/cosmic-greeter-dae
 _dconf_sources="user/dconf.service"
 _docker_engine_sources="system/docker.service system/docker.socket"  # From https://github.com/moby/moby/blob/master/contrib/init/systemd
 _eg25_manager_sources="system/eg25-manager.service" # From https://gitlab.com/mobian1/eg25-manager/-/blob/master/data/eg25-manager.service.in
+_espeakup_sources="system/espeakup.service" # From https://github.com/linux-speakup/espeakup/blob/master/services/systemd/espeakup.service.in
 _evolution_data_server_sources="
 	user/evolution-addressbook-factory.service
 	user/evolution-calendar-factory.service
@@ -227,6 +229,7 @@ source="$(flatpath \
 	$_dconf_sources \
 	$_docker_engine_sources \
 	$_eg25_manager_sources \
+	$_espeakup_sources \
 	$_evolution_data_server_sources \
 	$_feedbackd_sources \
 	$_flatpak_sources \
@@ -347,6 +350,7 @@ e4de73d12abd046c8683e3be6e3aab40a5db3f5d6246cedbb3ff099bcc8037a167b23ac957d30f11
 1189ada8b126b2e574aea2e9b3ad9b0a86282d82be4f4ad4c58b1d968ce15ff45e8c60108f5e128ee946aa7e6e57f9fbb0b5d31d8371e79a2f0b3f3456bbd65f  system-docker.service
 c2d1f2a55bd7eed5a296e14b3250baa2f568dbdbce4444bae4635c1ce4bd6d3f1036462926d8c32d62d6609f5fcfb58933bf7eeb1924aefd814e864bc77bb7c7  system-docker.socket
 780912dbfdc7e9a350e934d46022b043edda86a393a7c107d0c855e9580240e4bce791428fdadef0a45adc6cfa24fb5d58981b6ccd80e3dad99da3e5fa3dc7b8  system-eg25-manager.service
+840577babeea1bad699cf9350045646a05f3de0d83588153da6cc4f1051d26cce6c4b9b770ae8f7889e36c807e5a7755df35bb7d8d9c8e39aa3597cc253800f5  system-espeakup.service
 73e1839cec077e35ed985891f5274a09816115cc083e7a6e7e1fd98c88f4a114d7353492dee5808a28c47bf06bca32d9a6a7cc833cf4f21e501774955e93b321  user-evolution-addressbook-factory.service
 c648760e50e0c47970cce8fdd1972864af74bbc979ed4366973bf1c923ee624779bea95cf1e54260c55fa8a069090a367ceabe9b240842e20959bca42f2f8043  user-evolution-calendar-factory.service
 0e5d1d1cd0e7c9942dcc0c0742beb85f0c1c61338f0b637835f347579601ff7fe93214041306b69db2162aafb677a1d7111130c0f7dab646e5b5cd9f2dda3b33  user-evolution-source-registry.service
