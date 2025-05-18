@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+
+name=usb-moded
+description="usb-moded USB gadget controller"
+command="/usr/sbin/usb_moded"
+command_background=yes
+
+depend() {
+	need dbus
+}
+
+start_pre() {
+	# ConfigFS is necessary to be mounted at /config for usb-moded
+	mkdir -p /config
+	mount -t configfs none /config
+
+	# Prepare gadget
+	mkdir -p /config/usb_gadget/g1
+	mkdir -p /config/usb_gadget/g1/configs/c.1
+	mkdir -p /config/usb_gadget/g1/strings/0x409
+	mkdir -p /config/usb_gadget/g1/configs/c.1/strings/0x409
+}
+
+stop_post() {
+	# Unmount ConfigFS when usb-moded is stopped
+	umount /config
+}
