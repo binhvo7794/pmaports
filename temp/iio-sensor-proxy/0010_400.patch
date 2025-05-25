@@ -1,4 +1,4 @@
-From 4e43d56440727b3c56fadace5dae867118411049 Mon Sep 17 00:00:00 2001
+From 0de11afe466f4ad833f6c3ef07ab294529f35aba Mon Sep 17 00:00:00 2001
 From: "Sicelo A. Mhlongo" <absicsz@gmail.com>
 Date: Sat, 24 May 2025 09:41:28 +0200
 Subject: [PATCH] improve buffer sensor discovery
@@ -9,8 +9,8 @@ support these cases:
 
 - Modify prepare_output() to return a boolean value which will be used to check
     if a read returned data or not
-- Relocate the .discover method to after the .open method, .open to be used
-    during sensor discovery
+- Relocate the .discover method to after the .open method, since .open will be
+    called during sensor discovery
 - Modify the .discover logic as follows:
   - call the .open method to setup a complete sensor instance. This method also
       checks if the buffer can be enabled
@@ -34,16 +34,16 @@ TODO:
 Supersedes: https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/merge_requests/399
 Fixes: https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/issues/411
 ---
- src/drv-iio-buffer-accel.c   | 78 +++++++++++++++++++++++-------------
+ src/drv-iio-buffer-accel.c   | 77 +++++++++++++++++++++++-------------
  src/drv-iio-buffer-compass.c | 13 +-----
  src/drv-iio-buffer-light.c   | 12 +-----
  src/iio-buffer-utils.c       | 23 ++---------
  src/iio-buffer-utils.h       |  4 +-
- tests/integration-test.py    |  9 ++++-
- 6 files changed, 65 insertions(+), 74 deletions(-)
+ tests/integration-test.py    | 16 +++++++-
+ 6 files changed, 70 insertions(+), 75 deletions(-)
 
 diff --git a/src/drv-iio-buffer-accel.c b/src/drv-iio-buffer-accel.c
-index 90747a6..a3b9893 100644
+index 90747a6..1404216 100644
 --- a/src/drv-iio-buffer-accel.c
 +++ b/src/drv-iio-buffer-accel.c
 @@ -78,10 +78,11 @@ process_scan (IIOSensorData data, SensorDevice *sensor_device)
@@ -56,25 +56,18 @@ index 90747a6..a3b9893 100644
  		const char   *dev_dir_name,
 -		const char   *trigger_name)
 +		const char   *trigger_name,
-+		gboolean      continuous)
++		gboolean      discovery)
  {
  	DrvData *drv_data = (DrvData *) sensor_device->priv;
  	g_autoptr(IIOSensorData) data = NULL;
-@@ -91,22 +92,32 @@ prepare_output (SensorDevice *sensor_device,
+@@ -91,22 +92,31 @@ prepare_output (SensorDevice *sensor_device,
  
  	data = iio_sensor_data_new (drv_data->buffer_data->scan_size * buf_len);
  
 -	/* Attempt to open non blocking to access dev */
--	fp = open (drv_data->dev_path, O_RDONLY | O_NONBLOCK);
++	/* Attempt to open dev with non blocking access */
+ 	fp = open (drv_data->dev_path, O_RDONLY | O_NONBLOCK);
 -	if (fp == -1) { /* If it isn't there make the node */
-+	/*
-+	 * During sensor discovery, open the file in blocking mode to ensure
-+	 * get a one-shot (non-continuous) reading.
-+	 */
-+	if (continuous)
-+		fp = open (drv_data->dev_path, O_RDONLY | O_NONBLOCK);
-+	else
-+		fp = open (drv_data->dev_path, O_RDONLY);
 +	if (fp == -1) {
  		if (!IS_TEST)
  			g_warning ("Failed to open '%s' at %s: %s", sensor_device->name, drv_data->dev_path, g_strerror (errno));
@@ -82,7 +75,13 @@ index 90747a6..a3b9893 100644
 +		return FALSE;
  	}
  
- 	/* Actually read the data */
+-	/* Actually read the data */
++	/*
++	 * Actually read the data. During sensor discovery, pause a little for
++	 * the buffer to fill up, since there will only be a one-shot reading
++	 */
++	if (discovery)
++		g_usleep(500000);
  	data->read_size = read (fp, data->data, buf_len * drv_data->buffer_data->scan_size);
  	if (data->read_size == -1 && errno == EAGAIN) {
  		g_debug ("No new data available on '%s'", sensor_device->name);
@@ -91,20 +90,20 @@ index 90747a6..a3b9893 100644
  	}
  
 -	process_scan (*data, sensor_device);
-+	/* Discard the data during sensor discovery */
-+	if (continuous)
++	/* Do not process the data if the read happens during sensor discovery */
++	if (!discovery)
 +		process_scan (*data, sensor_device);
 +
 +	return TRUE;
  }
  
  static gboolean
-@@ -115,24 +126,11 @@ read_orientation (gpointer user_data)
+@@ -115,24 +125,11 @@ read_orientation (gpointer user_data)
  	SensorDevice *sensor_device = user_data;
  	DrvData *drv_data = (DrvData *) sensor_device->priv;
  
 -	prepare_output (sensor_device, drv_data->buffer_data->dev_dir_name, drv_data->buffer_data->trigger_name);
-+	prepare_output (sensor_device, drv_data->buffer_data->dev_dir_name, drv_data->buffer_data->trigger_name, TRUE);
++	prepare_output (sensor_device, drv_data->buffer_data->dev_dir_name, drv_data->buffer_data->trigger_name, FALSE);
  
  	return G_SOURCE_CONTINUE;
  }
@@ -125,7 +124,7 @@ index 90747a6..a3b9893 100644
  static void
  iio_buffer_accel_set_polling (SensorDevice *sensor_device,
  			      gboolean state)
-@@ -164,13 +162,9 @@ iio_buffer_accel_open (GUdevDevice *device)
+@@ -164,13 +161,9 @@ iio_buffer_accel_open (GUdevDevice *device)
  {
  	SensorDevice *sensor_device;
  	DrvData *drv_data;
@@ -140,7 +139,7 @@ index 90747a6..a3b9893 100644
  	if (!buffer_data)
  		return NULL;
  
-@@ -205,6 +199,36 @@ iio_buffer_accel_close (SensorDevice *sensor_device)
+@@ -205,6 +198,36 @@ iio_buffer_accel_close (SensorDevice *sensor_device)
  	g_free (sensor_device);
  }
  
@@ -161,7 +160,7 @@ index 90747a6..a3b9893 100644
 +	/* Attempt to read from the sensor */
 +	drv_data = (DrvData *) sensor_device->priv;
 +	enable_ring_buffer (drv_data->buffer_data);
-+	buffer_usable = prepare_output (sensor_device, drv_data->buffer_data->dev_dir_name, drv_data->buffer_data->trigger_name, FALSE);
++	buffer_usable = prepare_output (sensor_device, drv_data->buffer_data->dev_dir_name, drv_data->buffer_data->trigger_name, TRUE);
 +
 +	/* Close the sensor until it has been claimed */
 +	disable_ring_buffer (drv_data->buffer_data);
@@ -303,7 +302,7 @@ index 597177a..7c1b773 100644
  gboolean enable_ring_buffer            (BufferDrvData *data);
 -gboolean is_buffer_usable              (GUdevDevice *device);
 diff --git a/tests/integration-test.py b/tests/integration-test.py
-index 8910539..1eb190d 100755
+index 8910539..b596eaa 100755
 --- a/tests/integration-test.py
 +++ b/tests/integration-test.py
 @@ -555,6 +555,9 @@ class Tests(dbusmock.DBusTestCase):
@@ -343,6 +342,30 @@ index 8910539..1eb190d 100755
          self.start_daemon()
  
          self.assertEqual(self.get_dbus_property('HasAmbientLight'), False)
+@@ -696,10 +703,12 @@ class Tests(dbusmock.DBusTestCase):
+         )
+         env = os.environ.copy()
+         env['LC_NUMERIC'] = 'fr_FR.UTF-8'
++        data = self.read_file(top_srcdir + '/tests/iio-buffer-accel-data/orientation-normal.bin')
++        with open(mock_dev_data,'wb') as mock_file:
++            mock_file.write(data)
+         self.start_daemon(env=env)
+ 
+         self.assertEqual(self.get_dbus_property('HasAccelerometer'), True)
+-        data = self.read_file(top_srcdir + '/tests/iio-buffer-accel-data/orientation-normal.bin')
+         with open(mock_dev_data,'wb') as mock_file:
+             mock_file.write(data)
+         self.proxy.ClaimAccelerometer()
+@@ -742,6 +751,9 @@ class Tests(dbusmock.DBusTestCase):
+         )
+         env = os.environ.copy()
+         env['LC_NUMERIC'] = 'fr_FR.UTF-8'
++        data = self.read_file(top_srcdir + '/tests/iio-buffer-accel-data/orientation-normal.bin')
++        with open(mock_dev_data,'wb') as mock_file:
++            mock_file.write(data)
+         self.start_daemon(env=env)
+ 
+         self.assertEqual(self.get_dbus_property('HasAccelerometer'), True)
 -- 
 GitLab
 
