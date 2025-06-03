@@ -3,7 +3,7 @@
 # Co-Maintainer: Pablo Correa Gomez <pabloyoyoista@postmarketos.org>
 # Co-Maintainer: fossdd <fossdd@pwned.life>
 pkgname=postmarketos-ui-phosh
-pkgver=24
+pkgver=25
 pkgrel=0
 pkgdesc="(Wayland) Mobile UI initially developed for the Librem 5"
 url="https://phosh.mobi"
@@ -23,6 +23,7 @@ depends="
 	sound-theme-phosh
 	tinydm
 	udiskie
+	usb-moded
 	xdg-desktop-portal-wlr
 	xdg-desktop-portal-phosh
 	"
