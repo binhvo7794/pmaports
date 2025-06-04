@@ -1,0 +1,17 @@
+#!/bin/sh
+
+addgroup -S -g 42 shadow 2>/dev/null
+
+# We cannot warranty that something was installed before alpine-baselayout
+if [ ! -L /bin ]; then
+    echo "INFO: /usr merge dryrun to check for errors"
+    if merge-usr --dryrun ; then
+        echo "INFO: Doing the /usr merge"
+        merge-usr
+    else
+        echo "Error trying the /usr merge!"
+        exit 1
+    fi
+fi
+
+exit 0
