@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "use_overlayfs=false" >> /etc/akms.conf
+echo "use_sandbox=false" >> /etc/akms.conf
