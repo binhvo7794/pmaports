@@ -1,0 +1,11 @@
+default postmarketOS
+menu title U-Boot menu
+prompt 1
+timeout 10
+
+label postmarketOS
+	kernel /boot/vmlinuz
+	fdt /boot/rk3566-pinenote-v1.2.dtb
+	initrd /boot/initramfs
+	append %%CMDLINE%%
+

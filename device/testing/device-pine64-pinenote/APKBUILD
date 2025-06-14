@@ -1,7 +1,7 @@
 # Maintainer: Antoine Martin (ayakael) <dev@ayakael.net>
 pkgname=device-pine64-pinenote
 pkgdesc="Pine64 PineNote"
-pkgver=3
+pkgver=4
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -9,9 +9,8 @@ arch="aarch64"
 options="!check !archcheck"
 depends="
 	linux-pine64-pinenote
-	pinenote-dbus-service<20221207
+	pinenote-dbus-service
 	postmarketos-base
-	u-boot-pine64-pinenote
 "
 makedepends="devicepkg-dev"
 source="
@@ -24,6 +23,7 @@ source="
 	panfrost.conf
 	phoc.ini
 	rockchip_ebc.conf
+	extlinux.conf.in
 "
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
@@ -32,11 +32,15 @@ subpackages="
 
 build() {
 	devicepkg_build $startdir $pkgname
+	_cmdline="$(awk -F '"' '{if($1 == "deviceinfo_kernel_cmdline="){print $2}}' "$srcdir"/deviceinfo)"
+	sed "s|%%CMDLINE%%|$_cmdline|" "$srcdir"/extlinux.conf.in > "$srcdir"/extlinux.conf
 }
 
 package() {
 	devicepkg_package $startdir $pkgname
 
+	install -Dm644 "$srcdir"/extlinux.conf \
+		"$pkgdir"/boot/extlinux/extlinux.conf
 	install -Dm644 "$srcdir"/local-overrides.quirks \
 		-t "$pkgdir"/etc/libinput/
 	install -Dm644 "$srcdir"/50-touchscreen.conf \
@@ -66,13 +70,14 @@ nonfree_firmware() {
 }
 
 sha512sums="
-5829b9b52206a7520066e4bb3c08c2535d98002a3940664a0239344f5e7522fe7b6a9cb0c0074f9846c7e42c40746f2991f6aeeefeba8efa9140c16630b2893e  deviceinfo
-473accb3497244742dd9fd15f8a02957a13e08fa4d4393fec185ecbb27f1f17726e4b5ece22da861151f9d358d3266206c647def8aa75adb672b6f1f1904c66f  modules-initfs
-4bf5158fbd53274a7429e825bb66225001f2403a4851e2d6803323b77d9095738ee3e5340ac85baf3e86bb4f47d38af8cbd78d8a5055c59a62f5b06e722e19cb  phoc.ini
-1123720962c9c8fec3c50302ca6a3dd56e2907dc9eea361a7b8eb4201b042476633d41a0ee4f6ab61d9c60eeccc894f83491ba9fa309a9bce2f1db0b0341d79d  local-overrides.quirks
 ac433eebbc35a48561837495997aee4e55510b979bc0d8e3bafb761bc1be5b4bdeed2f456369dcbc582688aefd07c63966b0d72b6ffa99e84cfd868e677f02c8  50-touchscreen.conf
 2bc51f200baefc37abfaaad368a911244999e906bdca4b728ac233f49a8fb3ae7206ee3c95cdb20d7dceae2a31d25a57f4e1da4fd67057fd64724b8232e42aed  81-libinput-pinenote.rules
 19e922eec89dba419798c4e1dc9b39c040db33986d0969a39a8220c642fa081763f15ff2418115d5a748af4054a1be0784927d1712ea79942c2b237ebab47728  82-ebc-rockchip.rules
+092e4215def11fe87f67be06d6b717858505626450dafa0d116384ab8f638ab10daa510851731542b8aa650a5974f28c7c32d1a5f3219133d90668965a54bf73  deviceinfo
+1123720962c9c8fec3c50302ca6a3dd56e2907dc9eea361a7b8eb4201b042476633d41a0ee4f6ab61d9c60eeccc894f83491ba9fa309a9bce2f1db0b0341d79d  local-overrides.quirks
+473accb3497244742dd9fd15f8a02957a13e08fa4d4393fec185ecbb27f1f17726e4b5ece22da861151f9d358d3266206c647def8aa75adb672b6f1f1904c66f  modules-initfs
 6ba6638754e00908243de2f73ed6898dac03638a200dcf7b7cd9684757355ee1eb0ac874af0f971ad2e054c1a8c471867bdaea4d9aaf7eea6d3cf81ac7dd73a2  panfrost.conf
+4bf5158fbd53274a7429e825bb66225001f2403a4851e2d6803323b77d9095738ee3e5340ac85baf3e86bb4f47d38af8cbd78d8a5055c59a62f5b06e722e19cb  phoc.ini
 b52d2e7f0c62d7c313b6db9aeb706cdb2596b6aa637aeddb862abf1e256103377fb6267e38cd4285e25d32112acf8d03bbf32ecff7be3dfbb9176209ea7ae283  rockchip_ebc.conf
+ca06719446897710f102f845ed1bf2dc24198387681056bc002baaa9317ce12fec9c90c826902bb45432ea7dcfa0250595c9f0ee986483d45fe3ef39e19f6bcf  extlinux.conf.in
 "
