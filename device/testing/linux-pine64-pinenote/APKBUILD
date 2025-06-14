@@ -2,8 +2,8 @@
 # Kernel config based on: arch/arm64/configs/pinenote_defconfig
 # Maintainer: Antoine Martin (ayakael) <dev@ayakael.net>
 pkgname=linux-pine64-pinenote
-pkgver=6.12.0
-pkgrel=1
+pkgver=6.12.33
+pkgrel=0
 pkgdesc="Pine64 PineNote close to mainline fork"
 arch="aarch64"
 _carch="arm64"
@@ -26,6 +26,8 @@ _config="config-$_flavor.$arch"
 _commit="9d066a65f5cbaa8cd3bfc73a1b54fbac2d0f76ac"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/m-weigand/linux/archive/$_commit.tar.gz
+	patch-shim.patch
+	patch-$pkgver.patch.xz::https://cdn.kernel.org/pub/linux/kernel/v${pkgver%%.*}.x/patch-$pkgver.xz
 	$_config
 "
 builddir="$srcdir/linux-$_commit"
@@ -61,5 +63,7 @@ package() {
 
 sha512sums="
 d3c2510f9f835a0570fbb812cec2f9e12e402878c1f9f214364ae1918bc4c00f69a1fc5e005cf6b85c0690e6fd5f6ce9e61efd88145a83725ed12b6b8c07b97e  linux-pine64-pinenote-9d066a65f5cbaa8cd3bfc73a1b54fbac2d0f76ac.tar.gz
+9442b7240debef567986f225c7e83bb7dfcd86dc4298519f49428da30baff563b239abfeff21dee82847b3356cf5c5fdd472f2acd1460df4be900f8e481b0675  patch-shim.patch
+8353de185f89a08bf22cc6c324d092922f154963f42ad265dad1667c59fcdc145f049604be5fb3ac353a06391f9a1ce864f36ca062d861b5978c97518ab15e09  patch-6.12.33.patch.xz
 c9183c618318dd76ae74a0dacf7e09a6cd9d664008128fc82d7c4a3fc2510287a2f3d44ffba9ee3b8428ef7ce1c98b5a22f7da9a693de407b4746700b5283009  config-pine64-pinenote.aarch64
 "
