@@ -1,5 +1,6 @@
 tps65185-regulator
 rockchip_ebc
+gpio_rockchip
 drm_kms_helper
 drm_shmem_helper
 pvi_waveform
