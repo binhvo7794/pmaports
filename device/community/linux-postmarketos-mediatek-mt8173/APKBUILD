@@ -2,7 +2,7 @@
 # Co-Maintainer: Jenneron <jenneron@protonmail.com>
 pkgname=linux-postmarketos-mediatek-mt8173
 pkgver=6.15.2
-pkgrel=0
+pkgrel=1
 pkgdesc="Mainline kernel fork for Mediatek MT8173 devices"
 arch="aarch64"
 _carch="arm64"
@@ -37,6 +37,7 @@ source="
 	https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${pkgver//_/-}.tar.xz
 	$_config
 	fix-mmc-order.patch
+	drm-mediatek-only-announce-AFBC-if-really-supported.patch
 "
 builddir="$srcdir/linux-${_kernver//_/-}"
 
@@ -69,4 +70,5 @@ sha512sums="
 5893a0f6971826553008790e7c89ce68bcda5b895fdd8b37297833b3a4604a8aff99fa93469464ded084df37e183f24f5ed39512a37790397d7f70d1031195af  linux-6.15.2.tar.xz
 96b95be773bce360edfdeeb6396ce1d293140687e9d1d5ea17e49262e4ef048e0b3fc5d0810b54c1279ed27b4120bc4ad772a1227d578b09815d8cab5dfbffa0  config-postmarketos-mediatek-mt8173.aarch64
 c86f8dfc32165a32381d45a4c8b6811ebf43f01b5d8a48fbe227cf5084cfefe24b32264c1c150cb49115db4759a2d21ad48b37dcaac78367d226e9cc2a5ba849  fix-mmc-order.patch
+c133230bc7023531cee932e0a007613b9813ccaec422a0e9d9ff14e6afb6f6cc82a774a45668ff1777d8746e25938fcd40194419c2945f0700a7aef3c3c0f488  drm-mediatek-only-announce-AFBC-if-really-supported.patch
 "
