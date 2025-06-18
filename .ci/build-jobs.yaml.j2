@@ -1,6 +1,7 @@
 image: alpine:latest
 stages:
   - build
+  - hardware tests
 
 workflow:
   rules:
@@ -30,11 +31,14 @@ placeholder:
     - .ci/lib/gitlab_prepare_ci.sh
   after_script:
     - cp -r /home/pmos/.local/var/pmbootstrap/packages/ packages/ || true
+    - mkdir -p keys
+    - cp /home/pmos/.local/var/pmbootstrap/config_apk_keys/pmos@local*.pub keys/ || true
     - .ci/lib/move_logs.sh $CI_PROJECT_DIR
   artifacts:
     expire_in: 1 week
     paths:
       - packages/
+      - keys/
   timeout: 10 h
 
 build-x86_64:
@@ -44,6 +48,26 @@ build-x86_64:
   extends: .build
   script:
     - .ci/build-x86_64.sh
+
+{% if ('x86_64' in archs) %}
+build-ci-tron-artifacts-x86_64:
+  stage: hardware-tests
+  needs: ["build-x86_64"]
+  rules:
+    - when: manual
+  before_script:
+    - wget "https://gitlab.postmarketos.org/postmarketOS/ci-common/-/raw/master/install_pmbootstrap.sh"
+    - sh ./install_pmbootstrap.sh
+  script:
+    - .ci/build-ci-tron.sh
+  after_script:
+    - cp -rL /tmp/postmarketOS-export export || true
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - export/
+{% endif %}
+
 
 build-x86:
 {% if ('x86' in archs) %}
