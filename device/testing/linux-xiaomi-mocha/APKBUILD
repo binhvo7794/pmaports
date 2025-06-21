@@ -2,7 +2,7 @@
 
 pkgname=linux-xiaomi-mocha
 pkgver=6.15.0
-pkgrel=1
+pkgrel=0
 pkgdesc="Xiaomi Mi Pad close-to-mainline kernel fork"
 arch="armv7"
 _carch="arm"
