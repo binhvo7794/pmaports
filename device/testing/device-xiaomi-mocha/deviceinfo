@@ -16,4 +16,4 @@ deviceinfo_external_storage="true"
 
 # Bootloader related
 deviceinfo_flash_method="none"
-deviceinfo_generate_extlinux_config='true'
+deviceinfo_generate_extlinux_config="true"
