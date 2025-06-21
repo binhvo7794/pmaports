@@ -1,0 +1,57 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: arch/arm/configs/(CHANGEME!)
+
+pkgname=linux-xiaomi-mocha
+pkgver=6.15.0
+pkgrel=1
+pkgdesc="Xiaomi Mi Pad close-to-mainline kernel fork"
+arch="armv7"
+_carch="arm"
+_flavor="xiaomi-mocha"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="bash bc bison devicepkg-dev flex openssl-dev perl gmp-dev mpc1-dev mpfr-dev findutils postmarketos-installkernel dtbtool"
+
+# Source
+_repository="linux-ml"
+_commit="117346daf9b57207c06b4f870e06b5da5b419a05"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/MiPadLinux/$_repository/archive/$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/$_repository-$_commit"
+_outdir=".output"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+	# Master DTB (deviceinfo_bootimg_qcdt)
+	# dtbTool -o "$_outdir/arch/$_carch/boot"/dt.img \
+	# 	"$_outdir/arch/$_carch/boot/"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
+}
+
+sha512sums="
+6457f401b5bda7a39d9e1e7192a72469e17217ae56920179cca02ee389280478a8b656a1e18bbd3f3a40fae1554388a1489b7a1b1b3334e6bc96eec6901d1d34  linux-xiaomi-mocha-117346daf9b57207c06b4f870e06b5da5b419a05.tar.gz
+35edd0fc72a3ca286b4cecf8453f0f2d23306827f7f14582329da89751ddb06d93ff62bf582bf2df602a2e791c3c47720fa74e133ed0fb427a4f057ff1faa506  config-xiaomi-mocha.armv7
+"
