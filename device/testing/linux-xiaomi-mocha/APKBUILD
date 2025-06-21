@@ -1,5 +1,4 @@
-# Reference: <https://postmarketos.org/vendorkernel>
-# Kernel config based on: arch/arm/configs/(CHANGEME!)
+# Kernel config based on: arch/arm/configs/mocha_defconfig
 
 pkgname=linux-xiaomi-mocha
 pkgver=6.15.0
