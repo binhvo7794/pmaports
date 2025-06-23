@@ -1,0 +1,23 @@
+# Maintainer: Jens Reidel <adrian@travitia.xyz>
+
+pkgname=firmware-xiaomi-surya
+pkgver=3
+pkgrel=0
+pkgdesc="Firmware for Xiaomi POCO X3 NFC"
+url="https://github.com/sm7150-mainline/firmware-xiaomi-surya"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps pmb:cross-native"
+_commit="26ecffbe095b05e396872c8e6bb9e0fff09e25aa"
+source="$pkgname-$_commit.tar.gz::$url/archive/$_commit/$pkgname-$_commit.tar.gz"
+builddir="$srcdir/$pkgname-$_commit"
+
+package() {
+	mkdir -p "$pkgdir"
+
+	find . -type f -exec install -Dm644 {} "$pkgdir"/{} \;
+}
+
+sha512sums="
+af10c80e0e166732aacb4f9cc94aa7f8670fcf0d483f9a7526141fce7ff0094a82b95974d4e2ff90945dae65b787ab18a22ff601086faa5941da31cadf5a9d0d  firmware-xiaomi-surya-26ecffbe095b05e396872c8e6bb9e0fff09e25aa.tar.gz
+"
