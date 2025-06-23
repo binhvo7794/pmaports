@@ -8,10 +8,10 @@
 pkgname=systemd-services
 # 1. bump pkgver
 pkgver=74
-pkgrel=0
+pkgrel=1
 pkgdesc="Systemd service files"
 url="https://postmarketos.org"
-arch="noarch"
+arch="noarch !armhf"
 options="!check"
 license="BSD-3-Clause"
 
