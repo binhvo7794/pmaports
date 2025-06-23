@@ -4,7 +4,7 @@
 
 _flavor="postmarketos-qcom-sm7150"
 pkgname=linux-$_flavor
-pkgver=6.15.0_rc2
+pkgver=6.16.0_rc3
 pkgrel=0
 pkgdesc="Mainline Kernel fork for SM7150 devices"
 arch="aarch64"
@@ -71,6 +71,6 @@ package() {
 
 
 sha512sums="
-ddb65acb95da6e26a21e3e08a8613fd8af9c5bce33f8f18ff933f75460c3c51d58f18dba431f037e56902f75c7174dcff03923225641db246a0c3b1643855e5f  linux-postmarketos-qcom-sm7150-v6.15.0_rc2.tar.gz
-5b5aa50a301a4542eb0fbee94edfcc1c1120d6b39a50ec74ecae5f37ac86d8f5228d780c920c5cf26e72d909485073624d604f0e3909b87f6c7c32eaba7362a0  config-postmarketos-qcom-sm7150.aarch64
+65d603d0a6c8caa69f20ecbc3f3c80dee95b3c8c73f46ab95fc9211bbc36c71a69026c3bc48c67d8f00bc34bf501af999e5fd13a3d6ba32e82fdc0a6a605c567  linux-postmarketos-qcom-sm7150-v6.16.0_rc3.tar.gz
+257e5d01daecacd8aa98e3ec3ba61b685e43a4d6eacec2ff6a110c692ae5cad6f1c7bd71f2fd237667899ef5062631d4386a017c866f153c45926962ea8d3951  config-postmarketos-qcom-sm7150.aarch64
 "
