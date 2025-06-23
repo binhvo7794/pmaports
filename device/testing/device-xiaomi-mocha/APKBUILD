@@ -11,11 +11,12 @@ depends="
 	linux-xiaomi-mocha
 	postmarketos-base
 	linux-firmware-nvidia
+	linux-firmware-brcm
+	firmware-xiaomi-mocha-brcm
 "
 makedepends="devicepkg-dev"
 source="
 	deviceinfo
-	modules-initfs
 "
 
 build() {
@@ -27,6 +28,5 @@ package() {
 }
 
 sha512sums="
-c49202cd8e77558dd1d1f522b668d7cd6bab54f50c4dd472301528b8ed333aa841d9961435a6aa91307f232350170d91ce6ca45b423735dc155ed27a718b687e  deviceinfo
-e70bae17df23dcaaaea0e2d3616556f04baa23f8ee1357785c0f539bf97282d8ddff53953e155b72689bb73beb38c2da3d08de2a61e866684edfa10a6593885d  modules-initfs
+1f8b3295dac348efceaf63936e198a583646f910461fe9177114a2a592cc1cb0b5b2d9e265bf44483f36711b8b197beffc900264c9c3fa59750f61eec19ca007  deviceinfo
 "
