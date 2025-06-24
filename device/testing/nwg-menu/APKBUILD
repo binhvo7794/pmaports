@@ -11,7 +11,7 @@ makedepends="go cairo-dev gtk+3.0-dev gtk-layer-shell-dev"
 source="$pkgname-$pkgver.tar.gz::https://github.com/nwg-piotr/nwg-menu/archive/refs/tags/v$pkgver.tar.gz"
 
 build() {
-	go build -o "build/$pkgname" *.go
+	go build -x -o "build/$pkgname" *.go
 }
 
 package() {
