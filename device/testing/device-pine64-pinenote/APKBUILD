@@ -91,13 +91,13 @@ sway() {
 	install_if="$pkgname=$pkgver-r$pkgrel sway"
 	depends="postmarketos-theme"
 
-	$ greetd config
+	# greetd config
 	install -Dm644  \
 		"$builddir"/etc/greetd/environments \
-		"$builddir"/sway-config \
+		"$builddir"/etc/greetd/sway-config \
 		-t "$subpkgdir"/etc/greetd
 
-	$ sway configs
+	# sway configs
 	install -Dm644 \
 		"$builddir"/etc/sway_hrdl/sway/colorscheme \
 		"$builddir"/etc/sway_hrdl/sway/config \
@@ -112,7 +112,7 @@ sway() {
 
 	# wayland configs
 	install -Dm644 \
-		wayland-sessions/sway_hrdl.desktop \
+		"$builddir"/wayland-sessions/sway_hrdl.desktop \
 		-t "$subpkgdir"/usr/share/wayland-sessions
 
 	# bins
@@ -122,7 +122,6 @@ sway() {
 		"$builddir"/bin/sway_rotate.sh \
 		"$builddir"/bin/sway_workspace \
 		"$builddir"/bin/toggle_onscreen_keyboard.py \
-		"$builddir"/bin/share_tablet \
 		"$builddir"/bin/sway_dbus_integration.py \
 		"$builddir"/bin/sway_hrdl \
 		"$builddir"/bin/waybar_hrdl \
@@ -135,13 +134,8 @@ xournalapp() {
 
 	install -Dm644 \
 		"$builddir"/config/xournalpp/settings.xml \
-		"$builddir"/config/xournalpp/toolbar.ini \`
+		"$builddir"/config/xournalpp/toolbar.ini \
 		-t "$subpkgdir"/etc/skel/.config/xournalpp
-
-	install -Dm755 \
-		"$builddir"/bin/xournalpp_pen_enter_proximity.sh \
-		"$builddir"/bin/xournalpp_pen_leave_proximity.sh \
-		-t "$subpkgdir"/usr/bin
 }
 
 nonfree_firmware() {
