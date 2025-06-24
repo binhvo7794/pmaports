@@ -10,14 +10,11 @@ makedepends="rust cargo"
 source="$pkgname-$pkgver.tar.gz::https://github.com/efernau/rot8/archive/refs/tags/v$pkgver.tar.gz"
 
 prepare() {
-	export RUSTUP_TOOLCHAIN=stable
-	cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+	cargo fetch --locked
 }
 
 build() {
-	export RUSTUP_TOOLCHAIN=stable
-	export CARGO_TARGET_DIR=target
-	cargo build --frozen --release --all-features
+	CARGO_TARGET_DIR=target	cargo build --frozen --release --all-features
 }
 
 package() {
