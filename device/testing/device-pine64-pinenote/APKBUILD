@@ -183,7 +183,7 @@ nonfree_firmware_systemd() {
 	install -Dm644 \
 		"$builddir"/systemd/pinenote-hrdl-extract-waveform.service \
 		"$builddir"/systemd/pinenote-hrdl-convert-waveform.service \
-		-t "$subkgdir"/usr/lib/systemd/system
+		-t "$subpkgdir"/usr/lib/systemd/system
 }
 
 
