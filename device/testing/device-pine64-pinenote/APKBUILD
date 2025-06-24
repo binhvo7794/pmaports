@@ -54,7 +54,7 @@ package() {
 
 	# modprobe ryles
 	install -Dm644 \
-		"$builddir"/etc/modprobe.d/rockchip_ebc.conf
+		"$builddir"/etc/modprobe.d/rockchip_ebc.conf \
 		"$builddir"/etc/modprobe.d/wifi.conf \
 		-t "$pkgdir"/etc/modprobe.d
 
@@ -133,8 +133,9 @@ xournalapp() {
 	install_if="$pkgname=$pkgver-r$pkgrel xournalpp"
 	depends="xournalpp"
 
-	install -Dm644 "$builddir"/config/xournalpp/settings.xml \
-		"$builddir"/config/xournalpp/toolbar.ini \
+	install -Dm644 \
+		"$builddir"/config/xournalpp/settings.xml \
+		"$builddir"/config/xournalpp/toolbar.ini \`
 		-t "$subpkgdir"/etc/skel/.config/xournalpp
 
 	install -Dm755 \
