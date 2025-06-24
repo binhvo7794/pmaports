@@ -40,4 +40,3 @@ deviceinfo_flash_kernel_on_update="true"
 deviceinfo_initfs_compression="zstd:fast"
 
 # osk-sdl
-deviceinfo_mesa_driver="msm"
