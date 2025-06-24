@@ -60,9 +60,9 @@ package() {
 
 	# udev rules
 	install -Dm644 \
-		81-libinput-pinenote.rules \
-		83-backlight.rules \
-		84-rockchip-ebc-power.rules \
+		"$builddir"/etc/udev/rules.d/81-libinput-pinenote.rules \
+		"$builddir"/etc/udev/rules.d/83-backlight.rules \
+		"$builddir"/etc/udev/rules.d/84-rockchip-ebc-power.rules \
 		-t "$pkgdir"/etc/udev/rules.d
 
 
