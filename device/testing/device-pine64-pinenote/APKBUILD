@@ -34,8 +34,11 @@ source="
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
 	$pkgname-nonfree-firmware-openrc:nonfree_firmware_openrc
+	$pkgname-nonfree-firmware-systemd:nonfree_firmware_systemd
 	$pkgname-phosh
 	$pkgname-x11
+	$pkgname-sway
+	$pkgname-xournalapp
 "
 builddir="$srcdir"/pinenote-dist-$_commit
 
@@ -46,10 +49,30 @@ build() {
 package() {
 	devicepkg_package $startdir $pkgname
 
-	# install hrdl's config files and bin files
-	mkdir -p "$pkgdir"/usr/libexec
-	cp -R "$builddir"/bin "$pkgdir"/usr/libexec/pinenote
-	cp -R "$builddir"/etc "$pkgdir"/etc
+	install -Dm644 "$builddir"/etc/libinput/local-overrides.quirks \
+		-t "$pkgdir"/etc/libinput
+
+	# modprobe ryles
+ 	install -Dm644 \
+		"$builddir"/etc/modprobe.d/rockchip_ebc.conf
+		"$builddir"/etc/modprobe.d/wifi.conf \
+		-t "$pkgdir"/etc/modprobe.d
+
+	# udev rules
+	install -Dm644 \
+		81-libinput-pinenote.rules \
+		83-backlight.rules \
+		84-rockchip-ebc-power.rules \
+		-t "$pkgdir"/etc/udev/rules.d
+
+
+	# bins
+    install -Dm755 \
+		"$builddir"/bin/rockchip_ebc_custom_ioctl.py \
+		"$builddir"/bin/rockchip_ebc_dump_buffers.py \
+    	"$builddir"/bin/before_sleep.sh \
+		"$builddir"/bin/after_resume.sh \
+		-t "$pkgdir"/usr/bin
 
 	# panfront sometimes insists on loading after rockchip_ebc
 	install -Dm644 "$srcdir"/panfrost.conf \
@@ -64,6 +87,62 @@ phosh() {
 		-t "$subpkgdir"/etc/phosh
 }
 
+sway() {
+	install_if="$pkgname=$pkgver-r$pkgrel sway"
+	depends="postmarketos-theme"
+
+	$ greetd config
+    install -Dm644  \
+		"$builddir"/etc/greetd/environments \
+		"$builddir"/sway-config \
+		-t "$subpkgdir"/etc/greetd
+
+	$ sway configs
+    install -Dm644 \
+		"$builddir"/etc/sway_hrdl/sway/colorscheme \
+		"$builddir"/etc/sway_hrdl/sway/config \
+		-t "$subpkgdir"/etc/sway_hrdl/sway
+    install -Dm644 \
+		"$builddir"/etc/sway_hrdl/waybar/config \
+    	"$builddir"/etc/sway_hrdl/waybar/style.css \
+		-t "$subpkgdir"/etc/sway_hrdl/waybar
+    install -Dm644 \
+		"$builddir"/etc/sway_hrdl/nwg-panel/menu-start.css \
+		-t "$subpkgdir"/etc/sway_hrdl/nwg-panel
+
+	# wayland configs
+	install -Dm644 \
+		wayland-sessions/sway_hrdl.desktop \
+		-t "$subpkgdir"/usr/share/wayland-sessions
+
+	# bins
+    install -Dm755 \
+		"$builddir"/bin/launch_lisgd.sh \
+		"$builddir"/bin/toggle_menu.sh \
+		"$builddir"/bin/sway_rotate.sh \
+		"$builddir"/bin/sway_workspace \
+		"$builddir"/bin/toggle_onscreen_keyboard.py \
+		"$builddir"/bin/share_tablet \
+    	"$builddir"/bin/sway_dbus_integration.py \
+		"$builddir"/bin/sway_hrdl \
+		"$builddir"/bin/waybar_hrdl \
+		-t "$subpkgdir"/usr/bin
+}
+
+xournalapp() {
+	install_if="$pkgname=$pkgver-r$pkgrel xournalpp"
+	depends="xournalpp"
+
+    install -Dm644 "$builddir"/config/xournalpp/settings.xml \
+		"$builddir"/config/xournalpp/toolbar.ini \
+		-t "$subpkgdir"/etc/skel/.config/xournalpp
+
+    install -Dm755 \
+		"$builddir"/bin/xournalpp_pen_enter_proximity.sh \
+		"$builddir"/bin/xournalpp_pen_leave_proximity.sh \
+		-t "$subpkgdir"/usr/bin
+}
+
 nonfree_firmware() {
 	pkgdesc="WiFi, Bluetooth and display firmware"
 	depends="linux-firmware py3-numpy"
@@ -74,11 +153,10 @@ nonfree_firmware() {
 	# and initd script executes it at first boot of device
 	install -Dm644 "$srcdir"/30-eink-waveform.files \
 		"$subpkgdir"/usr/share/mkinitfs/files/30-eink-waveform.files
-	install -Dm755 "$builddir"/bin/wbf_to_custom.py \
-		-t "$subpkgdir"/usr/libexec/pinenote
-	install -Dm755 "$builddir"/bin/read_file.py \
-		-t "$subpkgdir"/usr/libexec/pinenote
-	install -Dm755 "$builddir"/bin/waveform_extract.sh \
+	install -Dm755 \
+		"$builddir"/bin/wbf_to_custom.py \
+		"$builddir"/bin/read_file.py \
+		"$builddir"/bin/waveform_extract.sh \
 		-t "$subpkgdir"/usr/libexec/pinenote
 
 	# create empty waveform firmware so that initial mkinitfs doesn't fail
@@ -95,6 +173,18 @@ nonfree_firmware_openrc() {
 	install -Dm755 "$srcdir"/pinenote-init-waveform.initd \
 		"$subpkgdir"/etc/init.d/pinenote-init-waveform
 }
+
+nonfree_firmware_systemd() {
+	install_if="$pkgname-nonfree-firmware=$pkgver-r$pkgrel systemd"
+	install="$subpkgname.post-install $subpkgname.post-upgrade"
+	depends="systemd"
+
+	install -Dm644 \
+		"$builddir"/systemd/pinenote-hrdl-extract-waveform.service \
+		"$builddir"/systemd/pinenote-hrdl-convert-waveform.service \
+		-t "${pkgdir}/usr/lib/systemd/system"
+}
+
 
 x11() {
 	install_if="$pkgname=$pkgver-r$pkgrel xorg-server"
