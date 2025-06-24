@@ -53,7 +53,7 @@ package() {
 		-t "$pkgdir"/etc/libinput
 
 	# modprobe ryles
- 	install -Dm644 \
+	install -Dm644 \
 		"$builddir"/etc/modprobe.d/rockchip_ebc.conf
 		"$builddir"/etc/modprobe.d/wifi.conf \
 		-t "$pkgdir"/etc/modprobe.d
@@ -67,10 +67,10 @@ package() {
 
 
 	# bins
-    install -Dm755 \
+	install -Dm755 \
 		"$builddir"/bin/rockchip_ebc_custom_ioctl.py \
 		"$builddir"/bin/rockchip_ebc_dump_buffers.py \
-    	"$builddir"/bin/before_sleep.sh \
+		"$builddir"/bin/before_sleep.sh \
 		"$builddir"/bin/after_resume.sh \
 		-t "$pkgdir"/usr/bin
 
@@ -92,21 +92,21 @@ sway() {
 	depends="postmarketos-theme"
 
 	$ greetd config
-    install -Dm644  \
+	install -Dm644  \
 		"$builddir"/etc/greetd/environments \
 		"$builddir"/sway-config \
 		-t "$subpkgdir"/etc/greetd
 
 	$ sway configs
-    install -Dm644 \
+	install -Dm644 \
 		"$builddir"/etc/sway_hrdl/sway/colorscheme \
 		"$builddir"/etc/sway_hrdl/sway/config \
 		-t "$subpkgdir"/etc/sway_hrdl/sway
-    install -Dm644 \
+	install -Dm644 \
 		"$builddir"/etc/sway_hrdl/waybar/config \
-    	"$builddir"/etc/sway_hrdl/waybar/style.css \
+		"$builddir"/etc/sway_hrdl/waybar/style.css \
 		-t "$subpkgdir"/etc/sway_hrdl/waybar
-    install -Dm644 \
+	install -Dm644 \
 		"$builddir"/etc/sway_hrdl/nwg-panel/menu-start.css \
 		-t "$subpkgdir"/etc/sway_hrdl/nwg-panel
 
@@ -116,14 +116,14 @@ sway() {
 		-t "$subpkgdir"/usr/share/wayland-sessions
 
 	# bins
-    install -Dm755 \
+	install -Dm755 \
 		"$builddir"/bin/launch_lisgd.sh \
 		"$builddir"/bin/toggle_menu.sh \
 		"$builddir"/bin/sway_rotate.sh \
 		"$builddir"/bin/sway_workspace \
 		"$builddir"/bin/toggle_onscreen_keyboard.py \
 		"$builddir"/bin/share_tablet \
-    	"$builddir"/bin/sway_dbus_integration.py \
+		"$builddir"/bin/sway_dbus_integration.py \
 		"$builddir"/bin/sway_hrdl \
 		"$builddir"/bin/waybar_hrdl \
 		-t "$subpkgdir"/usr/bin
@@ -133,11 +133,11 @@ xournalapp() {
 	install_if="$pkgname=$pkgver-r$pkgrel xournalpp"
 	depends="xournalpp"
 
-    install -Dm644 "$builddir"/config/xournalpp/settings.xml \
+	install -Dm644 "$builddir"/config/xournalpp/settings.xml \
 		"$builddir"/config/xournalpp/toolbar.ini \
 		-t "$subpkgdir"/etc/skel/.config/xournalpp
 
-    install -Dm755 \
+	install -Dm755 \
 		"$builddir"/bin/xournalpp_pen_enter_proximity.sh \
 		"$builddir"/bin/xournalpp_pen_leave_proximity.sh \
 		-t "$subpkgdir"/usr/bin
