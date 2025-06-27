@@ -1,0 +1,7 @@
+.test-{{ device.name }}:
+  # Extended from jobs defined in ci-common's ci-tron/common.yml
+  extends:
+    - .ci-tron-runner-{{ device.name }}
+    - .ci-tron-device-boot-flow-separate-artifacts
+  variables:
+    KERNEL_NAME: vmlinuz-$KERNEL_VARIANT
