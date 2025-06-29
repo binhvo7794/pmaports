@@ -1,0 +1,32 @@
+pkgname=firmware-xiaomi-spes
+pkgver=2
+pkgrel=0
+pkgdesc="Firmware for Xiaomi Redmi Note 11"
+url="https://github.com/binhvo7794/firmware-xiaomi-spes"
+arch="aarch64"
+depends="wcnss-wlan"
+license="proprietary"
+options="!check !strip !archcheck !spdx !tracedeps pmb:cross-native"
+
+_commit="611d3d647b41bf5e2e5766891a7e4e49f3961327"
+
+source="$pkgname-$_commit.tar.gz::$url/archive/$_commit.tar.gz"
+
+_fwdir="/lib/firmware/postmarketos"
+
+package() {
+	cd "$srcdir/$pkgname-$_commit"
+
+	# ADSP firmware
+	install -Dm0644 adsp/adsp.* -t "$pkgdir/$_fwdir"
+
+	# GPU and video acceleration firmwares
+	install -Dm0644 gpu/* -t "$pkgdir/$_fwdir/../qcom"
+	install -Dm0644 venus/venus.* -t "$pkgdir/$_fwdir"
+
+	# Wifi/BT firmware
+	install -Dm0644 bt/* -t "$pkgdir/$_fwdir"
+}
+sha512sums="
+191a28f70778a8921f32d5fb7ac4b23f25c49d00f7415353f8874106387acf2f8646e15fff98d1e0a4993fd29b721181a52342beba49acbc1a17d146de6b7d50  firmware-xiaomi-spes-611d3d647b41bf5e2e5766891a7e4e49f3961327.tar.gz
+"
