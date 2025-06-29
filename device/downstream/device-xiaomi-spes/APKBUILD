@@ -1,5 +1,4 @@
 # Reference: <https://postmarketos.org/devicepkg>
-# Maintainer: Omar Mahboubi <omar_mahboubi@tutanota.com>
 pkgname=device-xiaomi-spes
 pkgdesc="Xiaomi Redmi Note 11"
 pkgver=1
@@ -28,5 +27,5 @@ package() {
 }
 
 sha512sums="
-540f3dfb2792c0717428915f1db2346ed21ccd4ac5f8fd5f7b7abd3350bcd767023c39c2db50c31be7178352e7975afa5239eed0ae6bbefe8394e605a6742339  deviceinfo
+28b230e65454ac1242d28f98d4a801086326b6016f0cceb2cbcdf998c40d8e869bd835617464414e3561192559f311183dc32f3162cacbd7d1f52ea3bf5cf982  deviceinfo
 "
