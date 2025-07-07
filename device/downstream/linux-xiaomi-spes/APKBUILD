@@ -1,7 +1,7 @@
 # Reference: <https://postmarketos.org/vendorkernel>
 
 pkgname=linux-xiaomi-spes
-pkgver=4.19.313
+pkgver=4.19.204
 pkgrel=0
 pkgdesc="Xiaomi Redmi Note 11 kernel fork"
 arch="aarch64"
@@ -27,8 +27,8 @@ makedepends="
 "
 
 # Source
-_repository="spes_halium"
-_commit="4acaf5f2c4da4f740850f1d707192c3cd7ccecda"
+_repository="karamel"
+_commit="918905b358ca8d93fe02d081fa9dead434a30804"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/binhvo7794/$_repository/archive/$_commit.tar.gz
@@ -62,6 +62,6 @@ package() {
 }
 
 sha512sums="
-1185f680726d62895b1a87d724d7054487aeb10a79f144fd76385acbb65e4f26d6b2bbaad8bd23db828030c70336f0d5db00f91334d494f9494d72f68667db69  linux-xiaomi-spes-4acaf5f2c4da4f740850f1d707192c3cd7ccecda.tar.gz
+c79fc94f2dffe2b32cf70c7c4264143c6bfc2e05bd9a7cf2920448da54c6563acce4cd3979f04e6d4ca05615501682bdda8d6bea6257d5974893b5a3010d4e4e  linux-xiaomi-spes-918905b358ca8d93fe02d081fa9dead434a30804.tar.gz
 d3fdf9b32e1416935a99a39f3eae2f7e3e727e7f1d519f47f83c7a554e178a5d0757032a185fddfde93c57f64e3d4183acf0e043b06c2c81e67017f58f68513b  config-xiaomi-spes.aarch64
 "
